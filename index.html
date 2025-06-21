@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@1..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica+SC&display=swap");
+
+      body {
+        background-color: #121212;
+      }
+
+      .tessera-outer {
+        filter: drop-shadow(5px 5px 5px var(--tessera-indirect-lighting-color))
+          drop-shadow(-5px -5px 5px #000000aa);
+        pointer-events: none;
+        transition: filter 0.3s, transform 0.7s;
+        backdrop-filter: blur(10px);
+        --bg-alpha: 30%;
+      }
+
+      .tessera {
+        pointer-events: all;
+        font-family: "EB Garamond", serif;
+        cursor: pointer;
+      }
+
+      .tessera-outer:has(.tessera:hover) {
+        filter: drop-shadow(-2px -2px 10px #00000077)
+          drop-shadow(10px 10px 10px #00000077) brightness(3.2);
+        z-index: 3;
+        transform: translate(-10px, -10px) scale(1.5);
+      }
+
+      .tessera-normal-contents {
+        transition: filter 0.7s, opacity 0.7s;
+        z-index: 4;
+      }
+
+      .tessera:hover .tessera-normal-contents {
+        filter: blur(15px);
+        opacity: 1;
+      }
+
+      .tessera-hover-contents {
+        transition: opacity 0.7s, filter 0.7s, transform 0.7s;
+        opacity: 1;
+        filter: blur(8px);
+      }
+
+      .tessera:hover .tessera-hover-contents {
+        opacity: 1;
+        filter: blur(0.6px);
+        transform: scale(0.9);
+      }
+
+      .tessera-detail {
+        transform: scale(0.84);
+        transition: transform 0.7s, filter 0.7s;
+      }
+
+      .tessera-detail-2 {
+        transform: translate(30px, 30px);
+        transition: transform 0.7s, filter 0.7s;
+      }
+
+      .tessera:hover .tessera-detail {
+        transform: scale(0.72);
+        filter: brightness(0.7);
+      }
+
+      .tessera:hover .tessera-detail-2 {
+        transform: translate(50px, 50px);
+        filter: brightness(0.7);
+      }
+    </style>
+    <script>
+      const BUMPY_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.02%200.02%22%20type%3D%22fractalNoise%22%20numOctaves%3D%224%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+
+      const TEXTURE_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%20100%20100%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%20%20%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.04%200.25%22%20numOctaves%3D%224%22%2F%3E%20%20%20%20%20%20%3CfeComponentTransfer%20result%3D%2258303230-42dd-4dc7-8f88-4795a5ec9a51%22%20in%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncA%20type%3D%22gamma%22%20amplitude%3D%222%22%20exponent%3D%2210%22%20offset%3D%220%22%3E%3C%2FfeFuncA%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncR%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncR%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncG%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncG%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncB%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncB%3E%0A%20%20%20%20%20%20%3C%2FfeComponentTransfer%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+
+      function minDist(x, y, pts, pos) {
+        return pts.reduce(
+          (prev, curr) =>
+            Math.min(
+              prev,
+              curr !== pos ? Math.hypot(curr.x - x, curr.y - y) : Infinity
+            ),
+          Infinity
+        );
+      }
+
+      function minIndex(x, y, pts, pos) {
+        const mindist = minDist(x, y, pts, pos);
+        for (let i = 0; i < pts.length; i++) {
+          if (Math.hypot(pts[i].x - x, pts[i].y - y) === mindist) return i;
+        }
+        return 0;
+      }
+
+      function getVoronoiPath(pos, pts, resolution, margin) {
+        let path = [];
+
+        const pts2 = pts.flatMap((pt) => {
+          if (pt === pos) return [];
+
+          const dx = pos.x - pt.x;
+          const dy = pos.y - pt.y;
+
+          const offset = Math.hypot(dx, dy);
+
+          return [
+            {
+              x: pt.x + (dx / offset) * margin,
+              y: pt.y + (dy / offset) * margin,
+            },
+          ];
+        });
+
+        for (let i = 0; i < resolution; i++) {
+          const angle = (i / resolution) * Math.PI * 2 - Math.PI;
+          let x = pos.x;
+          let y = pos.y;
+          let dx = Math.cos(angle);
+          let dy = Math.sin(angle);
+
+          let j = 0;
+          let totalDist = 0;
+          while (j++ < 100) {
+            const distFromPos = Math.hypot(x - pos.x, y - pos.y);
+            const minDistFromOthers = minDist(x, y, pts2, pos);
+
+            const raymarchDist = Math.max(
+              0,
+              (minDistFromOthers - distFromPos) / 2
+            );
+
+            x += dx * raymarchDist;
+            y += dy * raymarchDist;
+
+            totalDist += raymarchDist;
+
+            if (raymarchDist < 0.01) break;
+          }
+
+          x += Math.random() * 4 - 2;
+          y += Math.random() * 4 - 2;
+
+          path.push({ x, y });
+        }
+
+        return path;
+      }
+
+      const names = [
+        "Hanson Perry and the Crabmeat Loss",
+        "The Rainbow Pebble",
+        "The Broken Dawn",
+        "The Beast Of Liverwort Hill",
+        "Right of First Refuse",
+        "The Gizzen Kirk",
+        "Where Once the Canvas Fish Fly",
+        "The Parcelmen's Creed",
+        "Bessie Bogan and the Crow Road Inn",
+      ];
+
+      const descriptions = [
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+      ];
+
+      let pts = [];
+
+      let cols = 5;
+
+      let width = window.innerWidth;
+      let dx = Math.min(200, width / (cols - 1));
+
+      for (let y = 0; y < 5; y++) {
+        for (let x = 0; x < 5; x++) {
+          let text = "";
+          let hoverText = "";
+          if (x !== 0 && x !== 4 && y !== 0 && y !== 4) {
+            const i = Math.floor(Math.random() * names.length);
+            text = names.splice(i, 1)[0];
+            hoverText = descriptions.splice(i, 1)[0];
+          }
+
+          pts.push({
+            x: x * dx + Math.random() * 80 - 40,
+            y: y * 150 + Math.random() * 80 - 40,
+            text,
+            hoverText,
+          });
+        }
+      }
+
+      function getEnclosingBox(pts) {
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+
+        for (const pt of pts) {
+          minX = Math.min(pt.x, minX);
+          maxX = Math.max(pt.x, maxX);
+          minY = Math.min(pt.y, minY);
+          maxY = Math.max(pt.y, maxY);
+        }
+
+        return {
+          x: minX,
+          y: minY,
+          width: maxX - minX,
+          height: maxY - minY,
+        };
+      }
+
+      function getLeftEnvelope(pts) {
+        const box = getEnclosingBox(pts);
+        const ax = box.x + box.width / 2;
+        const ay = box.y + box.height / 2;
+        return pts
+          .filter(
+            (p) => p.y === box.y || p.y === box.y + box.height || p.x < ax
+          )
+          .sort(
+            (a, b) =>
+              Math.atan2(ay - a.y, ax - a.x) - Math.atan2(ay - b.y, ax - b.x)
+          );
+      }
+
+      function getRightEnvelope(pts) {
+        const box = getEnclosingBox(pts);
+        const ax = box.x + box.width / 2;
+        const ay = box.y + box.height / 2;
+        return pts
+          .filter(
+            (p) => p.y === box.y || p.y === box.y + box.height || p.x >= ax
+          )
+          .sort(
+            (a, b) =>
+              Math.atan2(a.y - ay, a.x - ax) - Math.atan2(b.y - ay, b.x - ax)
+          );
+      }
+
+      function makeHTMLTree(tree) {
+        const elem = document.createElement(tree.tag);
+        for (const [key, value] of Object.entries(tree)) {
+          if (key === "tag") continue;
+          if (key === "style") continue;
+          if (key === "children") continue;
+          if (key === "ref") continue;
+          elem[key] = value;
+        }
+
+        for (const [key, value] of Object.entries(tree.style ?? {})) {
+          if (key.startsWith("--")) {
+            elem.style.setProperty(key, value);
+            continue;
+          }
+          elem.style[key] = value;
+        }
+
+        for (const child of tree.children ?? []) {
+          elem.appendChild(child._raw ? child._raw : makeHTMLTree(child));
+        }
+
+        if (tree.ref) {
+          tree.ref.current = elem;
+        }
+
+        return elem;
+      }
+
+      const FULLSIZE = {
+        position: "absolute",
+        top: "0px",
+        left: "0px",
+        width: "100%",
+        height: "100%",
+      };
+
+      let maxY = 0;
+
+      for (const pt of pts) {
+        if (!pt.text) continue;
+        const hue = Math.random() * 360;
+        const saturation = Math.random() * 90 + 10;
+        const lightness = Math.random() * 20 + 30;
+
+        const path = getVoronoiPath(pt, pts, 30, 10);
+        const paddedPath = getVoronoiPath(pt, pts, 10, 20);
+        const rect = getEnclosingBox(path);
+        maxY = Math.max(rect.y + rect.height, maxY);
+        const textAngle = Math.random() * 10 - 5;
+
+        const pathPoly = `polygon(${path
+          .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
+          .join(",")})`;
+
+        const tesseraTextEnvelopes = [
+          {
+            tag: "div",
+            style: {
+              width: "50%",
+              height: `${rect.height}px`,
+              float: "left",
+              shapeOutside: `polygon(0% 0%, 0% 100%, ${getLeftEnvelope(
+                paddedPath
+              )
+                .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
+                .join(",")})`,
+            },
+          },
+          {
+            tag: "div",
+            style: {
+              width: "50%",
+              height: `${rect.height}px`,
+              float: "right",
+              shapeOutside: `polygon(100% 100%, 100% 0%, ${getRightEnvelope(
+                paddedPath
+              )
+                .map(
+                  (s) => `${s.x - rect.x - rect.width / 2}px ${s.y - rect.y}px`
+                )
+                .join(",")})`,
+            },
+          },
+        ];
+
+        const tesseraTextRef = {};
+
+        const tesseraNormalContents = {
+          tag: "div",
+          className: "tessera-normal-contents",
+          style: {
+            ...FULLSIZE,
+            zIndex: "3",
+            color: "white",
+            fontWeight: "bolder",
+            fontSize: "1.2em",
+            width: "100%",
+            mixBlendMode: "screen",
+            transform: `rotate(${textAngle}deg)`,
+          },
+          children: [
+            ...tesseraTextEnvelopes,
+            {
+              tag: "div",
+              innerText: pt.text,
+              style: {
+                textAlign: "center",
+                width: "100%",
+              },
+              ref: tesseraTextRef,
+            },
+          ],
+        };
+
+        const tesseraHoverContents = {
+          tag: "div",
+          className: "tessera-hover-contents",
+          style: {
+            ...FULLSIZE,
+            zIndex: "3",
+            color: "black",
+            fontWeight: "bolder",
+            fontSize: "0.85em",
+            width: "100%",
+            mixBlendMode: "multiply",
+            transform: `rotate(${textAngle}deg)`,
+          },
+          children: [
+            ...tesseraTextEnvelopes,
+            {
+              tag: "div",
+              innerText: pt.hoverText,
+              style: {
+                textAlign: "center",
+                width: "100%",
+                marginTop: "15px",
+              },
+              className: "tessera-hover-text",
+            },
+          ],
+        };
+
+        const tesseraPattern = {
+          tag: "div",
+          style: {
+            ...FULLSIZE,
+            transform: `rotate(${Math.random() * 360}deg)`,
+            zInex: "2",
+            mixBlendMode: "multiply",
+            backgroundImage: TEXTURE_SVG,
+            backgroundSize: "800px",
+          },
+        };
+
+        const tesseraPattern2 = {
+          tag: "div",
+          style: {
+            ...FULLSIZE,
+            zIndex: "2",
+            mixBlendMode: "luminance",
+            backgroundImage: BUMPY_SVG,
+            backgroundSize: "500px",
+            opacity: "0.3",
+          },
+        };
+
+        const tesseraDetail2 = {
+          tag: "div",
+          style: { ...FULLSIZE },
+          className: "tessera-detail-2",
+          children: [
+            {
+              tag: "div",
+              style: {
+                ...FULLSIZE,
+                clipPath: pathPoly,
+                backgroundColor: `hsl(${hue}deg ${saturation - 20}% ${
+                  lightness - 40
+                }% / var(--bg-alpha))`,
+              },
+            },
+          ],
+        };
+
+        const tesseraDetail = {
+          tag: "div",
+          style: {
+            ...FULLSIZE,
+            filter: "blur(2.5px)",
+          },
+          className: "tessera-detail",
+          children: [
+            {
+              tag: "div",
+              style: {
+                ...FULLSIZE,
+                clipPath: pathPoly,
+                backgroundColor: `hsl(${hue}deg ${saturation - 10}% ${
+                  lightness - 30
+                }% / 60%)`,
+              },
+              children: [
+                /* tesseraDetail2 */
+              ],
+            },
+          ],
+        };
+
+        const tessera = {
+          tag: "div",
+          style: {
+            ...FULLSIZE,
+            backgroundColor: `hsl(${hue}deg ${saturation}% ${lightness}% / var(--bg-alpha))`,
+            clipPath: pathPoly,
+          },
+          className: "tessera",
+          children: [
+            tesseraNormalContents,
+            tesseraHoverContents,
+            tesseraPattern,
+            tesseraPattern2,
+            tesseraDetail,
+          ],
+        };
+
+        const tesseraOuter = {
+          tag: "div",
+          style: {
+            position: "absolute",
+            top: `${rect.y}px`,
+            left: `${rect.x}px`,
+            width: `${rect.width}px`,
+            height: `${rect.height}px`,
+            "--tessera-indirect-lighting-color": `hsl(${hue}deg ${
+              saturation * 0.6
+            }% ${lightness * 1.3}% / 90%)`,
+            clipPath: pathPoly,
+          },
+          className: "tessera-outer",
+          children: [tessera],
+        };
+
+        document.body.appendChild(makeHTMLTree(tesseraOuter));
+
+        const tesseraText = tesseraTextRef.current;
+
+        let min = 0;
+        let max = Math.max(
+          rect.height - tesseraText.getBoundingClientRect().height,
+          0
+        );
+        let marginTop = (min + max) / 2;
+        tesseraText.style.marginTop = `${marginTop}px`;
+        for (let i = 0; i < 30; i++) {
+          let textrect = tesseraText.getBoundingClientRect();
+
+          let spacingTop = textrect.top - rect.y;
+          let spacingBottom = rect.y + rect.height - textrect.bottom;
+
+          marginTop = Math.min(
+            Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
+            max
+          );
+
+          tesseraText.style.marginTop = `${marginTop}px`;
+        }
+      }
+
+      document.body.style.height = `${maxY + 40}px`;
+    </script>
+  </body>
+</html>
