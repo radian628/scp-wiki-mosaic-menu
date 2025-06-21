@@ -52,14 +52,26 @@
 
       .tessera-hover-contents {
         transition: opacity 0.7s, filter 0.7s, transform 0.7s;
-        opacity: 1;
-        filter: blur(8px);
+        opacity: 0.5;
+        filter: blur(2px);
       }
 
       .tessera:hover .tessera-hover-contents {
         opacity: 1;
         filter: blur(0.6px);
-        transform: scale(0.9);
+        transform: scale(0.91);
+      }
+
+      .tessera-hover-contents-shadow {
+        transition: opacity 0.7s, filter 0.7s, transform 0.7s;
+        opacity: 0;
+        filter: blur(8px);
+      }
+
+      .tessera:hover .tessera-hover-contents-shadow {
+        opacity: 1;
+        filter: blur(3px);
+        transform: scale(1);
       }
 
       .tessera-detail {
@@ -394,7 +406,7 @@
             fontSize: "0.85em",
             width: "100%",
             mixBlendMode: "multiply",
-            transform: `rotate(${textAngle}deg)`,
+            rotate: `${textAngle}deg`,
           },
           children: [
             ...tesseraTextEnvelopes,
@@ -407,6 +419,34 @@
                 marginTop: "15px",
               },
               className: "tessera-hover-text",
+            },
+          ],
+        };
+
+        const tesseraHoverContentsShadow = {
+          tag: "div",
+          className: "tessera-hover-contents-shadow",
+          style: {
+            ...FULLSIZE,
+            zIndex: "3",
+            color: "black",
+            fontWeight: "bolder",
+            fontSize: "0.85em",
+            width: "100%",
+            mixBlendMode: "multiply",
+            transform: `rotate(${textAngle}deg)`,
+          },
+          children: [
+            ...tesseraTextEnvelopes,
+            {
+              tag: "div",
+              innerText: pt.hoverText,
+              style: {
+                textAlign: "center",
+                width: "100%",
+                marginTop: "15px",
+              },
+              className: "tessera-hover-text-shadow",
             },
           ],
         };
@@ -544,6 +584,7 @@
             tesseraPattern2,
             tesseraDetail,
             highlights1,
+            tesseraHoverContentsShadow,
           ],
         };
 
