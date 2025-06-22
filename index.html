@@ -707,7 +707,14 @@
               tag: "div",
               style: {
                 ...FULLSIZE,
-                backgroundColor: "#232334",
+                backgroundColor: "#0c1f29",
+              },
+            },
+            {
+              tag: "div",
+              style: {
+                ...FULLSIZE,
+                backgroundColor: `hsl(${hue}deg ${saturation}% ${lightness}% / var(--bg-alpha))`,
               },
             },
             tesseraBacklight,
