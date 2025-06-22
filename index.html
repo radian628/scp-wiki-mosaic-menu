@@ -24,7 +24,7 @@
         filter: drop-shadow(5px 5px 5px var(--tessera-indirect-lighting-color))
           drop-shadow(-5px -5px 5px #000000aa);
         pointer-events: none;
-        transition: filter 0.3s, transform 0.7s;
+        transition: filter 0.7s, transform 0.7s;
         backdrop-filter: blur(10px);
         --bg-alpha: 30%;
       }
@@ -32,6 +32,7 @@
       .tessera {
         pointer-events: all;
         font-family: "EB Garamond", serif;
+        transition: filter 0.7s;
         cursor: pointer;
       }
 
@@ -137,6 +138,10 @@
 
       .tessera:hover .backlight {
         opacity: 0.2;
+      }
+
+      body:has(.tessera:hover) .tessera:not(:hover) {
+        filter: brightness(0.8);
       }
     </style>
     <script>
