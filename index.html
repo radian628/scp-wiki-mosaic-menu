@@ -45,12 +45,34 @@
 
       .tessera-normal-contents {
         transition: filter 0.7s, opacity 0.7s;
+        mix-blend-mode: lighten;
         z-index: 4;
+      }
+
+      .tessera-normal-text {
+        /* filter: drop-shadow(-5px -5px 5px #000000)
+          drop-shadow(-10px -10px 10px #000000)
+          drop-shadow(5px 5px 5px rgba(243, 188, 107, 0.4)); */
+        /* filter: drop-shadow(0px 0px 0px #fff8); */
+        text-shadow: 1px 1px 1px #0007;
+        background-image: linear-gradient(
+          45deg,
+          rgba(243, 188, 107, 1),
+          rgb(255, 235, 205)
+        );
+        color: transparent;
+        background-clip: text;
       }
 
       .tessera:hover .tessera-normal-contents {
         filter: blur(15px);
         opacity: 0.2;
+      }
+
+      .tessera-shadow-text-contents {
+        color: black;
+        filter: blur(1px);
+        transform: translate(10px, 10px);
       }
 
       .tessera-hover-contents {
@@ -508,11 +530,9 @@
           style: {
             ...FULLSIZE,
             zIndex: "3",
-            color: "#fffc",
             fontWeight: "bolder",
             fontSize: "1.2em",
             width: "100%",
-            mixBlendMode: "screen",
             transform: `rotate(${textAngle}deg)`,
           },
           children: [
@@ -520,11 +540,42 @@
             {
               tag: "div",
               innerText: pt.text,
+              className: "tessera-normal-text",
               style: {
                 textAlign: "center",
                 width: "100%",
               },
               ref: tesseraTextRef,
+            },
+          ],
+        };
+
+        const tesseraShadowTextRef = {};
+
+        const tesseraShadowTextContents = {
+          tag: "div",
+          className: "tessera-shadow-text-contents",
+          style: {
+            ...FULLSIZE,
+            zIndex: "3",
+            top: "1px",
+            left: "1px",
+            fontWeight: "bolder",
+            fontSize: "1.2em",
+            width: "100%",
+            transform: `rotate(${textAngle}deg)`,
+          },
+          children: [
+            ...tesseraTextEnvelopes,
+            {
+              tag: "div",
+              innerText: pt.text,
+              className: "tessera-shadow-text",
+              style: {
+                textAlign: "center",
+                width: "100%",
+              },
+              ref: tesseraShadowTextRef,
             },
           ],
         };
@@ -714,6 +765,7 @@
             },
             tesseraBacklight,
             tesseraNormalContents,
+            // tesseraShadowTextContents,
             tesseraHoverContents,
             tesseraDetail,
             highlights1,
@@ -780,6 +832,7 @@
             );
 
             tesseraText.style.marginTop = `${marginTop}px`;
+            // tesseraShadowTextRef.current.style.marginTop = `${marginTop}px`;
           }
         }
 
