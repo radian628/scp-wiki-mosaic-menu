@@ -226,6 +226,12 @@
 
       const SMOOTH_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.006%200.006%22%20type%3D%22fractalNoise%22%20numOctaves%3D%221%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
+      const SCUFF_MARKS_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%0A%20%20%3Cfilter%20id%3D%22scuff-marks%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.1%200.005%22%20type%3D%22fractalNoise%22%20numOctaves%3D%223%22%2F%3E%3CfeColorMatrix%20result%3D%2246baceaf-4fc3-407b-b36d-ba52e344baf7%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20values%3D%220%200%200%200%200%0A0%200%200%200%200%0A0%200%200%200%200%0A0%200%200%2010%20-7%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%20%20%20%20%3CfeSpecularLighting%0Aresult%3D%22fa00e2fe-99ae-4161-99c6-7951bd26e1e6%22%20%20%0A%20%20%20%20%20%20specularExponent%3D%2220%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20elevation%3D%2240%22%20azimuth%3D%2245%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%0A%3E%0A%3Cg%20transform-origin%3D%22center%22%20transform%3D%22rotate({$angle})%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%25%22%20height%3D%22160%25%22%20fill%3D%22transparent%22%20%20filter%3D%22url('%23scuff-marks')%22%3E%3C%2Frect%3E%20%0A%20%20%3C%2Fg%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E#f0")`;
+
+      function scuffMarks(angle) {
+        return SCUFF_MARKS_SVG.replaceAll("{$angle}", angle);
+      }
+
       function minDist(x, y, pts, pos) {
         return pts.reduce(
           (prev, curr) =>
@@ -647,12 +653,16 @@
           tag: "div",
           style: {
             ...FULLSIZE,
-            transform: `rotate(${Math.random() * 360}deg)`,
             zInex: "2",
             mixBlendMode: "multiply",
-            backgroundImage: TEXTURE_SVG,
+            backgroundImage: scuffMarks(Math.random() * 360),
             backgroundSize: "800px",
+            opacity: 0.2,
           },
+        };
+
+        const tesseraBackfacePattern = {
+          tag: "div",
         };
 
         const tesseraPattern2 = {
@@ -683,7 +693,18 @@
                 clipPath: pathPoly,
                 opacity: `var(--bg-alpha)`,
               },
-              children: [],
+              children: [
+                {
+                  tag: "div",
+                  style: {
+                    ...FULLSIZE,
+                    zInex: "2",
+                    backgroundImage: scuffMarks(Math.random() * 360),
+                    backgroundSize: "800px",
+                    opacity: 1,
+                  },
+                },
+              ],
             },
           ],
         };
@@ -767,12 +788,14 @@
                 ...FULLSIZE,
                 opacity: `var(--bg-alpha)`,
               },
+              children: [],
             },
             tesseraBacklight,
             tesseraNormalContents,
             // tesseraShadowTextContents,
             tesseraHoverContents,
             tesseraDetail,
+            tesseraPattern,
             highlights1,
             tesseraHoverContentsShadow,
           ],
