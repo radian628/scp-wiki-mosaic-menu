@@ -502,6 +502,8 @@
           .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
           .join(",")})`;
 
+        const tesseraScuffMarks = scuffMarks(Math.random() * 360);
+
         const tesseraTextEnvelopes = [
           {
             tag: "div",
@@ -655,7 +657,7 @@
             ...FULLSIZE,
             zInex: "2",
             mixBlendMode: "multiply",
-            backgroundImage: scuffMarks(Math.random() * 360),
+            backgroundImage: tesseraScuffMarks,
             backgroundSize: "800px",
             opacity: 0.2,
           },
@@ -699,7 +701,7 @@
                   style: {
                     ...FULLSIZE,
                     zInex: "2",
-                    backgroundImage: scuffMarks(Math.random() * 360),
+                    backgroundImage: tesseraScuffMarks,
                     backgroundSize: "800px",
                     opacity: 1,
                   },
