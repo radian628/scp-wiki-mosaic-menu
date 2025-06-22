@@ -301,6 +301,8 @@
       let width = window.innerWidth;
       let dx = Math.min(200, width / (cols - 1));
 
+      const parity = Math.floor(Math.random() * 2);
+
       for (let y = 0; y < 5; y++) {
         for (let x = 0; x < 5; x++) {
           let text = "";
@@ -318,7 +320,7 @@
 
           pts.push({
             x: x * dx + Math.random() * 80 - 40,
-            y: y * 150 + Math.random() * 80 - 40,
+            y: y * 170 + Math.random() * 80 - 40 + ((x + parity) % 2) * 80,
             text,
             hoverText,
             color,
