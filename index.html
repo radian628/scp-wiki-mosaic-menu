@@ -140,6 +140,15 @@
         opacity: 0.2;
       }
 
+      .visited-checker-link {
+        background-color: red;
+        mix-blend-mode: saturation;
+      }
+
+      .visited-checker-link:visited {
+        background-color: white;
+      }
+
       body:has(.tessera:hover) .tessera:not(:hover) {
         filter: brightness(0.6);
       }
@@ -694,6 +703,13 @@
           },
           className: "tessera",
           children: [
+            {
+              tag: "div",
+              style: {
+                ...FULLSIZE,
+                backgroundColor: "#232334",
+              },
+            },
             tesseraBacklight,
             tesseraNormalContents,
             tesseraHoverContents,
@@ -702,6 +718,16 @@
             tesseraDetail,
             highlights1,
             tesseraHoverContentsShadow,
+            {
+              tag: "a",
+              href: pt.url ?? "asdasdsa",
+              className: "visited-checker-link",
+              style: {
+                ...FULLSIZE,
+                zIndex: "5",
+                pointerEvents: "none",
+              },
+            },
           ],
         };
 
