@@ -16,6 +16,8 @@
           #011018 107.83%
         );
         background-size: cover;
+        --displace-filter: url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%20100%20100%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3Cundefined%20result%3D%22fbe2e072-1565-41d1-9ec9-9c632c2225a2%22%20%20%20%2F%3E%3CfeTurbulence%20result%3D%228be7b434-b9c1-403d-8d8c-e4cecc0d4795%22%20%20%20%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.03%22%2F%3E%3CfeDisplacementMap%20result%3D%22830966fb-018e-4312-b66b-2ed4f7aedd5c%22%20in%3D%22SourceGraphic%22%20in2%3D%228be7b434-b9c1-403d-8d8c-e4cecc0d4795%22%20%20scale%3D%225%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E#f0");
+        --strong-displace-filter: url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%20100%20100%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3Cundefined%20result%3D%22fbe2e072-1565-41d1-9ec9-9c632c2225a2%22%20%20%20%2F%3E%3CfeTurbulence%20result%3D%228be7b434-b9c1-403d-8d8c-e4cecc0d4795%22%20%20%20%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.03%22%2F%3E%3CfeDisplacementMap%20result%3D%22830966fb-018e-4312-b66b-2ed4f7aedd5c%22%20in%3D%22SourceGraphic%22%20in2%3D%228be7b434-b9c1-403d-8d8c-e4cecc0d4795%22%20%20scale%3D%2220%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E#f0");
       }
 
       .tessera-outer {
@@ -52,14 +54,14 @@
 
       .tessera-hover-contents {
         transition: opacity 0.7s, filter 0.7s, transform 0.7s;
-        opacity: 0.3;
-        filter: blur(2px);
+        opacity: 0;
+        filter: blur(5px) var(--displace-filter);
       }
 
       .tessera:hover .tessera-hover-contents {
         opacity: 0.9;
-        filter: blur(0.2px);
-        transform: scale(0.89);
+        filter: blur(0.2px) var(--displace-filter);
+        transform: scale(0.87);
       }
 
       .tessera-hover-contents-shadow {
@@ -69,8 +71,8 @@
       }
 
       .tessera:hover .tessera-hover-contents-shadow {
-        opacity: 0.3;
-        filter: blur(3px);
+        opacity: 0.5;
+        filter: blur(4px);
         transform: scale(1);
       }
 
@@ -112,13 +114,21 @@
         transform: scale(0.9);
       }
 
+      .backlight-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: blur(20px);
+      }
+
       .backlight {
         position: absolute;
         top: calc(50% - 20px);
         left: calc(50% - 20px);
         border-radius: 50%;
         background-color: white;
-        filter: blur(20px);
         width: 40px;
         height: 40px;
         transition: opacity 0.7s, fliter 0.7s;
@@ -127,7 +137,6 @@
 
       .tessera:hover .backlight {
         opacity: 1;
-        filter: blur(20px);
       }
     </style>
     <script>
@@ -603,7 +612,13 @@
         const tesseraBacklight = {
           tag: "div",
           style: {},
-          className: "backlight",
+          className: "backlight-container",
+          children: [
+            {
+              type: "div",
+              className: "backlight",
+            },
+          ],
         };
 
         const tessera = {
