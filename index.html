@@ -125,18 +125,18 @@
 
       .backlight {
         position: absolute;
-        top: calc(50% - 20px);
-        left: calc(50% - 20px);
+        top: calc(50% - 45px);
+        left: calc(50% - 45px);
         border-radius: 50%;
         background-color: white;
-        width: 40px;
-        height: 40px;
+        width: 90px;
+        height: 90px;
         transition: opacity 0.7s, fliter 0.7s;
         opacity: 0;
       }
 
       .tessera:hover .backlight {
-        opacity: 1;
+        opacity: 0.4;
       }
     </style>
     <script>
@@ -245,6 +245,55 @@
         "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
       ];
 
+      const tesseraData = [
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+          url: "https://scp-wiki.wikidot.com/mosaic-crabmeat",
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+        {
+          name: "Hanson Perry and the Crabmeat Loss",
+          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          color: [0, 90, 50],
+        },
+      ];
+
       let pts = [];
 
       let cols = 5;
@@ -256,10 +305,15 @@
         for (let x = 0; x < 5; x++) {
           let text = "";
           let hoverText = "";
+          let color = [0, 90, 50];
+          let url = "";
           if (x !== 0 && x !== 4 && y !== 0 && y !== 4) {
-            const i = Math.floor(Math.random() * names.length);
-            text = names.splice(i, 1)[0];
-            hoverText = descriptions.splice(i, 1)[0];
+            const i = Math.floor(Math.random() * tesseraData.length);
+            const t = tesseraData.splice(i, 1)[0];
+            text = t.name;
+            hoverText = t.desc;
+            color = t.color;
+            url = t.url;
           }
 
           pts.push({
@@ -267,6 +321,8 @@
             y: y * 150 + Math.random() * 80 - 40,
             text,
             hoverText,
+            color,
+            url,
           });
         }
       }
@@ -361,12 +417,13 @@
 
       for (const pt of pts) {
         if (!pt.text) continue;
-        const hue = Math.random() * 360;
-        const saturation = Math.random() * 90 + 10;
-        const lightness = Math.random() * 20 + 30;
+        // const hue = Math.random() * 360;
+        // const saturation = Math.random() * 90 + 10;
+        // const lightness = Math.random() * 20 + 30;
+        const [hue, saturation, lightness] = pt.color;
 
         const path = getVoronoiPath(pt, pts, 30, 10);
-        const paddedPath = getVoronoiPath(pt, pts, 10, 20);
+        const paddedPath = getVoronoiPath(pt, pts, 10, 35);
         const rect = getEnclosingBox(path);
         maxY = Math.max(rect.y + rect.height, maxY);
         const textAngle = Math.random() * 10 - 5;
@@ -642,8 +699,9 @@
         };
 
         const tesseraOuter = {
-          tag: "div",
+          tag: "a",
           style: {
+            display: "block",
             position: "absolute",
             top: `${rect.y}px`,
             left: `${rect.x}px`,
@@ -654,6 +712,7 @@
             }% ${lightness * 1.3}% / 90%)`,
             clipPath: pathPoly,
           },
+          href: pt.url ?? "#",
           className: "tessera-outer",
           children: [tessera],
         };
