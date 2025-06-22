@@ -272,30 +272,6 @@
         return path;
       }
 
-      const names = [
-        "Hanson Perry and the Crabmeat Loss",
-        "The Rainbow Pebble",
-        "The Broken Dawn",
-        "The Beast Of Liverwort Hill",
-        "Right of First Refuse",
-        "The Gizzen Kirk",
-        "Where Once the Canvas Fish Fly",
-        "The Parcelmen's Creed",
-        "Bessie Bogan and the Crow Road Inn",
-      ];
-
-      const descriptions = [
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-        "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-      ];
-
       const tesseraData = [
         {
           name: "Hanson Perry and the Crabmeat Loss",
@@ -304,44 +280,52 @@
           url: "https://scp-wiki.wikidot.com/mosaic-crabmeat",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "The Rainbow Pebble",
+          desc: "A rainbow pebble changes hands repeatedly. But does anyone know its true worth?",
           color: [274, 70, 34],
+          url: "https://scp-wiki.wikidot.com/mosaic-the-rainbow-pebble",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "The Broken Dawn",
+          desc: "In which dawn breaks, and no-one will come by to fix it.",
           color: [0, 90, 34],
+          url: "https://scp-wiki.wikidot.com/the-broken-dawn",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "The Beast of Liverwort Hill",
+          desc: "A metal beast appears in Liverwort Hill, but nothing steel can stsay.",
           color: [46, 100, 36],
+          url: "https://scp-wiki.wikidot.com/the-beast-of-liverwort-hill",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "Right of First Refuse",
+          desc: "In Which a Pile of Corpses Makes a Plea to the Courts.",
           color: [127, 90, 30],
+          url: "https://scp-wiki.wikidot.com/right-of-first-refuse",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "The Gizzen Kirk",
+          desc: "The Proctors find a canny soul to build a church to Progress.",
           color: [209, 92, 36],
+          url: "https://scp-wiki.wikidot.com/the-gizzen-kirk",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "Where Once the Canvas Fish Fly",
+          desc: "In which great beasts leave only their wake in the sky.",
           color: [0, 90, 50],
+          url: "https://scp-wiki.wikidot.com/canvas-fish-fly",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "The Parcelmen's Creed",
+          desc: "In which a Parcelwoman faces her greatest challenge yet: stairs.",
           color: [0, 90, 50],
+          url: "https://scp-wiki.wikidot.com/the-parcelmens-creed",
         },
         {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+          name: "Bessie Bogan and the Crow Road Inn",
+          desc: "In which the Mosaic’s favorite tavern flies into trouble.",
           color: [0, 90, 50],
+          url: "https://scp-wiki.wikidot.com/bessie-bogan-and-the-crow-road-inn",
         },
       ];
 
@@ -545,6 +529,8 @@
           ],
         };
 
+        const tesseraHoverTextRef = {};
+
         const tesseraHoverContents = {
           tag: "div",
           className: "tessera-hover-contents",
@@ -566,9 +552,9 @@
               style: {
                 textAlign: "center",
                 width: "100%",
-                marginTop: "15px",
               },
               className: "tessera-hover-text",
+              ref: tesseraHoverTextRef,
             },
           ],
         };
@@ -735,6 +721,8 @@
           ],
         };
 
+        const tesseraOuterRef = {};
+
         const tesseraOuter = {
           tag: "a",
           style: {
@@ -760,31 +748,64 @@
           href: pt.url ?? "ligmaballs",
           className: "tessera-outer",
           children: [tessera],
+          ref: tesseraOuterRef,
         };
 
         document.body.appendChild(makeHTMLTree(tesseraOuter));
 
-        const tesseraText = tesseraTextRef.current;
+        let z = 2;
+        tesseraOuterRef.current.addEventListener("hover", (e) => {
+          e.style.zIndex = z++;
+        });
 
-        let min = 0;
-        let max = Math.max(
-          rect.height - tesseraText.getBoundingClientRect().height,
-          0
-        );
-        let marginTop = (min + max) / 2;
-        tesseraText.style.marginTop = `${marginTop}px`;
-        for (let i = 0; i < 30; i++) {
-          let textrect = tesseraText.getBoundingClientRect();
+        {
+          const tesseraText = tesseraTextRef.current;
 
-          let spacingTop = textrect.top - rect.y;
-          let spacingBottom = rect.y + rect.height - textrect.bottom;
-
-          marginTop = Math.min(
-            Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
-            max
+          let min = 0;
+          let max = Math.max(
+            rect.height - tesseraText.getBoundingClientRect().height,
+            0
           );
-
+          let marginTop = (min + max) / 2;
           tesseraText.style.marginTop = `${marginTop}px`;
+          for (let i = 0; i < 30; i++) {
+            let textrect = tesseraText.getBoundingClientRect();
+
+            let spacingTop = textrect.top - rect.y;
+            let spacingBottom = rect.y + rect.height - textrect.bottom;
+
+            marginTop = Math.min(
+              Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
+              max
+            );
+
+            tesseraText.style.marginTop = `${marginTop}px`;
+          }
+        }
+
+        {
+          const tesseraHoverText = tesseraHoverTextRef.current;
+
+          let min = 0;
+          let max = Math.max(
+            rect.height - tesseraHoverText.getBoundingClientRect().height,
+            0
+          );
+          let marginTop = (min + max) / 2;
+          tesseraHoverText.style.marginTop = `${marginTop}px`;
+          for (let i = 0; i < 30; i++) {
+            let textrect = tesseraHoverText.getBoundingClientRect();
+
+            let spacingTop = textrect.top - rect.y;
+            let spacingBottom = rect.y + rect.height - textrect.bottom;
+
+            marginTop = Math.min(
+              Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
+              max
+            );
+
+            tesseraHoverText.style.marginTop = `${marginTop}px`;
+          }
         }
       }
 
