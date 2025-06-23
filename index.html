@@ -500,7 +500,14 @@
           .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
           .join(",")})`;
 
-        const tesseraScuffMarks = scuffMarks(Math.random() * 360);
+        // const tesseraScuffMarks = scuffMarks(Math.random() * 360);
+        const tesseraScuffMarks = "url(scuff-marks-texture-atlas.png)";
+        const scuffMarksDir = Math.floor(Math.random() * 16);
+        const scuffMarksDirX = (scuffMarksDir % 4) / 3;
+        const scuffMarksDirY = Math.floor(scuffMarksDir / 4) / 3;
+        const scuffMarksCenter = `${scuffMarksDirX * 100}% ${
+          scuffMarksDirY * 100
+        }%`;
 
         const tesseraTextEnvelopes = [
           {
@@ -656,8 +663,10 @@
             zInex: "2",
             mixBlendMode: "multiply",
             backgroundImage: tesseraScuffMarks,
-            backgroundSize: "800px",
-            opacity: 0.2,
+            backgroundSize: "400%",
+            backgroundPosition: scuffMarksCenter,
+            opacity: 0.4,
+            filter: "blur(0.5px)",
           },
         };
 
@@ -700,7 +709,8 @@
                     ...FULLSIZE,
                     zInex: "2",
                     backgroundImage: tesseraScuffMarks,
-                    backgroundSize: "800px",
+                    backgroundSize: "400%",
+                    backgroundPosition: scuffMarksCenter,
                     opacity: 1,
                   },
                 },
