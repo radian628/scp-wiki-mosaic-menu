@@ -215,691 +215,733 @@
       }
     </style>
     <script>
-      let z = 2;
-      const BUMPY_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.02%200.02%22%20type%3D%22fractalNoise%22%20numOctaves%3D%224%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+      function generateTessera() {
+        let z = 2;
+        const BUMPY_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.02%200.02%22%20type%3D%22fractalNoise%22%20numOctaves%3D%224%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
-      const SEAGLASS_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%221%201%22%20type%3D%22fractalNoise%22%20numOctaves%3D%221%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+        const SEAGLASS_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%221%201%22%20type%3D%22fractalNoise%22%20numOctaves%3D%221%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
-      const TEXTURE_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%20100%20100%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%20%20%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.04%200.25%22%20numOctaves%3D%224%22%2F%3E%20%20%20%20%20%20%3CfeComponentTransfer%20result%3D%2258303230-42dd-4dc7-8f88-4795a5ec9a51%22%20in%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncA%20type%3D%22gamma%22%20amplitude%3D%222%22%20exponent%3D%2210%22%20offset%3D%220%22%3E%3C%2FfeFuncA%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncR%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncR%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncG%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncG%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncB%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncB%3E%0A%20%20%20%20%20%20%3C%2FfeComponentTransfer%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+        const TEXTURE_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%20100%20100%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%20%20%20type%3D%22fractalNoise%22%20baseFrequency%3D%220.04%200.25%22%20numOctaves%3D%224%22%2F%3E%20%20%20%20%20%20%3CfeComponentTransfer%20result%3D%2258303230-42dd-4dc7-8f88-4795a5ec9a51%22%20in%3D%22957cb49d-1e06-4f98-9fd0-83484640742d%22%20%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncA%20type%3D%22gamma%22%20amplitude%3D%222%22%20exponent%3D%2210%22%20offset%3D%220%22%3E%3C%2FfeFuncA%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncR%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncR%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncG%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncG%3E%0A%20%20%20%20%20%20%20%20%3CfeFuncB%20type%3D%22linear%22%20slope%3D%220.2%22%20intercept%3D%220%22%3E%3C%2FfeFuncB%3E%0A%20%20%20%20%20%20%3C%2FfeComponentTransfer%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
-      const SMOOTH_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.006%200.006%22%20type%3D%22fractalNoise%22%20numOctaves%3D%221%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
+        const SMOOTH_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.006%200.006%22%20type%3D%22fractalNoise%22%20numOctaves%3D%221%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
-      const SCUFF_MARKS_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%0A%20%20%3Cfilter%20id%3D%22scuff-marks%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.1%200.005%22%20type%3D%22fractalNoise%22%20numOctaves%3D%223%22%2F%3E%3CfeColorMatrix%20result%3D%2246baceaf-4fc3-407b-b36d-ba52e344baf7%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20values%3D%220%200%200%200%200%0A0%200%200%200%200%0A0%200%200%200%200%0A0%200%200%2010%20-7%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%20%20%20%20%3CfeSpecularLighting%0Aresult%3D%22fa00e2fe-99ae-4161-99c6-7951bd26e1e6%22%20%20%0A%20%20%20%20%20%20specularExponent%3D%2220%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20elevation%3D%2240%22%20azimuth%3D%2245%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%0A%3E%0A%3Cg%20transform-origin%3D%22center%22%20transform%3D%22rotate({$angle})%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%25%22%20height%3D%22160%25%22%20fill%3D%22transparent%22%20%20filter%3D%22url('%23scuff-marks')%22%3E%3C%2Frect%3E%20%0A%20%20%3C%2Fg%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E#f0")`;
+        const SCUFF_MARKS_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%0A%20%20%3Cfilter%20id%3D%22scuff-marks%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.1%200.005%22%20type%3D%22fractalNoise%22%20numOctaves%3D%223%22%2F%3E%3CfeColorMatrix%20result%3D%2246baceaf-4fc3-407b-b36d-ba52e344baf7%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20values%3D%220%200%200%200%200%0A0%200%200%200%200%0A0%200%200%200%200%0A0%200%200%2010%20-7%22%2F%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%20%20%20%20%3CfeSpecularLighting%0Aresult%3D%22fa00e2fe-99ae-4161-99c6-7951bd26e1e6%22%20%20%0A%20%20%20%20%20%20specularExponent%3D%2220%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20elevation%3D%2240%22%20azimuth%3D%2245%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%0A%3E%0A%3Cg%20transform-origin%3D%22center%22%20transform%3D%22rotate({$angle})%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22160%25%22%20height%3D%22160%25%22%20fill%3D%22transparent%22%20%20filter%3D%22url('%23scuff-marks')%22%3E%3C%2Frect%3E%20%0A%20%20%3C%2Fg%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E#f0")`;
 
-      function scuffMarks(angle) {
-        return SCUFF_MARKS_SVG.replaceAll("{$angle}", angle);
-      }
-
-      function minDist(x, y, pts, pos) {
-        return pts.reduce(
-          (prev, curr) =>
-            Math.min(
-              prev,
-              curr !== pos ? Math.hypot(curr.x - x, curr.y - y) : Infinity
-            ),
-          Infinity
-        );
-      }
-
-      function minIndex(x, y, pts, pos) {
-        const mindist = minDist(x, y, pts, pos);
-        for (let i = 0; i < pts.length; i++) {
-          if (Math.hypot(pts[i].x - x, pts[i].y - y) === mindist) return i;
-        }
-        return 0;
-      }
-
-      function getVoronoiPath(pos, pts, resolution, margin) {
-        let path = [];
-
-        const pts2 = pts.flatMap((pt) => {
-          if (pt === pos) return [];
-
-          const dx = pos.x - pt.x;
-          const dy = pos.y - pt.y;
-
-          const offset = Math.hypot(dx, dy);
-
-          return [
-            {
-              x: pt.x + (dx / offset) * margin,
-              y: pt.y + (dy / offset) * margin,
-            },
-          ];
-        });
-
-        for (let i = 0; i < resolution; i++) {
-          const angle = (i / resolution) * Math.PI * 2 - Math.PI;
-          let x = pos.x;
-          let y = pos.y;
-          let dx = Math.cos(angle);
-          let dy = Math.sin(angle);
-
-          let j = 0;
-          let totalDist = 0;
-          while (j++ < 100) {
-            const distFromPos = Math.hypot(x - pos.x, y - pos.y);
-            const minDistFromOthers = minDist(x, y, pts2, pos);
-
-            const raymarchDist = Math.max(
-              0,
-              (minDistFromOthers - distFromPos) / 2
-            );
-
-            x += dx * raymarchDist;
-            y += dy * raymarchDist;
-
-            totalDist += raymarchDist;
-
-            if (raymarchDist < 0.01) break;
-          }
-
-          x += Math.random() * 4 - 2;
-          y += Math.random() * 4 - 2;
-
-          path.push({ x, y });
+        function scuffMarks(angle) {
+          return SCUFF_MARKS_SVG.replaceAll("{$angle}", angle);
         }
 
-        return path;
-      }
+        function minDist(x, y, pts, pos) {
+          return pts.reduce(
+            (prev, curr) =>
+              Math.min(
+                prev,
+                curr !== pos ? Math.hypot(curr.x - x, curr.y - y) : Infinity
+              ),
+            Infinity
+          );
+        }
 
-      const tesseraData = [
-        {
-          name: "Hanson Perry and the Crabmeat Loss",
-          desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
-          color: [0, 90, 50],
-          url: "https://scp-wiki.wikidot.com/mosaic-crabmeat",
-        },
-        {
-          name: "The Rainbow Pebble",
-          desc: "A rainbow pebble changes hands repeatedly. But does anyone know its true worth?",
-          color: [274, 70, 34],
-          url: "https://scp-wiki.wikidot.com/mosaic-the-rainbow-pebble",
-        },
-        {
-          name: "The Broken Dawn",
-          desc: "In which dawn breaks, and no-one will come by to fix it.",
-          color: [0, 90, 34],
-          url: "https://scp-wiki.wikidot.com/the-broken-dawn",
-        },
-        {
-          name: "The Beast of Liverwort Hill",
-          desc: "A metal beast appears in Liverwort Hill, but nothing steel can stsay.",
-          color: [46, 100, 36],
-          url: "https://scp-wiki.wikidot.com/the-beast-of-liverwort-hill",
-        },
-        {
-          name: "Right of First Refuse",
-          desc: "In Which a Pile of Corpses Makes a Plea to the Courts.",
-          color: [127, 90, 30],
-          url: "https://scp-wiki.wikidot.com/right-of-first-refuse",
-        },
-        {
-          name: "The Gizzen Kirk",
-          desc: "The Proctors find a canny soul to build a church to Progress.",
-          color: [209, 92, 36],
-          url: "https://scp-wiki.wikidot.com/the-gizzen-kirk",
-        },
-        {
-          name: "Where Once the Canvas Fish Fly",
-          desc: "In which great beasts leave only their wake in the sky.",
-          color: [0, 90, 50],
-          url: "https://scp-wiki.wikidot.com/canvas-fish-fly",
-        },
-        {
-          name: "The Parcelmen's Creed",
-          desc: "In which a Parcelwoman faces her greatest challenge yet: stairs.",
-          color: [0, 90, 50],
-          url: "https://scp-wiki.wikidot.com/the-parcelmens-creed",
-        },
-        {
-          name: "Bessie Bogan and the Crow Road Inn",
-          desc: "In which the Mosaic’s favorite tavern flies into trouble.",
-          color: [0, 90, 50],
-          url: "https://scp-wiki.wikidot.com/bessie-bogan-and-the-crow-road-inn",
-        },
-      ];
-
-      let pts = [];
-
-      let cols = 5;
-
-      let width = window.innerWidth;
-      let dx = Math.min(200, width / (cols - 1));
-
-      const parity = Math.floor(Math.random() * 2);
-
-      for (let y = 0; y < 5; y++) {
-        for (let x = 0; x < 5; x++) {
-          let text = "";
-          let hoverText = "";
-          let color = [0, 90, 50];
-          let url = "";
-          if (x !== 0 && x !== 4 && y !== 0 && y !== 4) {
-            const i = Math.floor(Math.random() * tesseraData.length);
-            const t = tesseraData.splice(i, 1)[0];
-            text = t.name;
-            hoverText = t.desc;
-            color = t.color;
-            url = t.url;
+        function minIndex(x, y, pts, pos) {
+          const mindist = minDist(x, y, pts, pos);
+          for (let i = 0; i < pts.length; i++) {
+            if (Math.hypot(pts[i].x - x, pts[i].y - y) === mindist) return i;
           }
+          return 0;
+        }
 
-          pts.push({
-            x: x * dx + Math.random() * 80 - 40 + y * 30,
-            y: y * 170 + Math.random() * 80 - 40 + ((x + parity) % 2) * 80,
-            text,
-            hoverText,
-            color,
-            url,
+        function getVoronoiPath(pos, pts, resolution, margin) {
+          let path = [];
+
+          const pts2 = pts.flatMap((pt) => {
+            if (pt === pos) return [];
+
+            const dx = pos.x - pt.x;
+            const dy = pos.y - pt.y;
+
+            const offset = Math.hypot(dx, dy);
+
+            return [
+              {
+                x: pt.x + (dx / offset) * margin,
+                y: pt.y + (dy / offset) * margin,
+              },
+            ];
           });
-        }
-      }
 
-      function getEnclosingBox(pts) {
-        let minX = Infinity;
-        let minY = Infinity;
-        let maxX = -Infinity;
-        let maxY = -Infinity;
+          for (let i = 0; i < resolution; i++) {
+            const angle = (i / resolution) * Math.PI * 2 - Math.PI;
+            let x = pos.x;
+            let y = pos.y;
+            let dx = Math.cos(angle);
+            let dy = Math.sin(angle);
 
-        for (const pt of pts) {
-          minX = Math.min(pt.x, minX);
-          maxX = Math.max(pt.x, maxX);
-          minY = Math.min(pt.y, minY);
-          maxY = Math.max(pt.y, maxY);
-        }
+            let j = 0;
+            let totalDist = 0;
+            while (j++ < 100) {
+              const distFromPos = Math.hypot(x - pos.x, y - pos.y);
+              const minDistFromOthers = minDist(x, y, pts2, pos);
 
-        return {
-          x: minX,
-          y: minY,
-          width: maxX - minX,
-          height: maxY - minY,
-        };
-      }
+              const raymarchDist = Math.max(
+                0,
+                (minDistFromOthers - distFromPos) / 2
+              );
 
-      function getLeftEnvelope(pts) {
-        const box = getEnclosingBox(pts);
-        const ax = box.x + box.width / 2;
-        const ay = box.y + box.height / 2;
-        return pts
-          .filter(
-            (p) => p.y === box.y || p.y === box.y + box.height || p.x < ax
-          )
-          .sort(
-            (a, b) =>
-              Math.atan2(ay - a.y, ax - a.x) - Math.atan2(ay - b.y, ax - b.x)
-          );
-      }
+              x += dx * raymarchDist;
+              y += dy * raymarchDist;
 
-      function getRightEnvelope(pts) {
-        const box = getEnclosingBox(pts);
-        const ax = box.x + box.width / 2;
-        const ay = box.y + box.height / 2;
-        return pts
-          .filter(
-            (p) => p.y === box.y || p.y === box.y + box.height || p.x >= ax
-          )
-          .sort(
-            (a, b) =>
-              Math.atan2(a.y - ay, a.x - ax) - Math.atan2(b.y - ay, b.x - ax)
-          );
-      }
+              totalDist += raymarchDist;
 
-      function makeHTMLTree(tree) {
-        const elem = document.createElement(tree.tag);
-        for (const [key, value] of Object.entries(tree)) {
-          if (key === "tag") continue;
-          if (key === "style") continue;
-          if (key === "children") continue;
-          if (key === "ref") continue;
-          elem[key] = value;
-        }
+              if (raymarchDist < 0.01) break;
+            }
 
-        for (const [key, value] of Object.entries(tree.style ?? {})) {
-          if (key.startsWith("--")) {
-            elem.style.setProperty(key, value);
-            continue;
+            x += Math.random() * 4 - 2;
+            y += Math.random() * 4 - 2;
+
+            path.push({ x, y });
           }
-          elem.style[key] = value;
+
+          return path;
         }
 
-        for (const child of tree.children ?? []) {
-          elem.appendChild(child._raw ? child._raw : makeHTMLTree(child));
-        }
-
-        if (tree.ref) {
-          tree.ref.current = elem;
-        }
-
-        return elem;
-      }
-
-      const FULLSIZE = {
-        position: "absolute",
-        top: "0px",
-        left: "0px",
-        width: "100%",
-        height: "100%",
-      };
-
-      let maxY = 0;
-
-      for (const pt of pts) {
-        if (!pt.text) continue;
-        // const hue = Math.random() * 360;
-        // const saturation = Math.random() * 90 + 10;
-        // const lightness = Math.random() * 20 + 30;
-        const [hue, saturation, lightness] = pt.color;
-
-        const path = getVoronoiPath(pt, pts, 30, 10);
-        const paddedPath = getVoronoiPath(pt, pts, 10, 35);
-        const rect = getEnclosingBox(path);
-        maxY = Math.max(rect.y + rect.height, maxY);
-        const textAngle = Math.random() * 10 - 5;
-
-        const pathPoly = `polygon(${path
-          .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
-          .join(",")})`;
-
-        // const tesseraScuffMarks = scuffMarks(Math.random() * 360);
-        const tesseraScuffMarks = "url(scuff-marks-texture-atlas.png)";
-        const scuffMarksDir = Math.floor(Math.random() * 16);
-        const scuffMarksDirX = (scuffMarksDir % 4) / 3;
-        const scuffMarksDirY = Math.floor(scuffMarksDir / 4) / 3;
-        const scuffMarksCenter = `${scuffMarksDirX * 100}% ${
-          scuffMarksDirY * 100
-        }%`;
-
-        const tesseraTextEnvelopes = [
+        const tesseraData = [
           {
-            tag: "div",
-            style: {
-              width: "50%",
-              height: `${rect.height}px`,
-              float: "left",
-              shapeOutside: `polygon(0% 0%, 0% 100%, ${getLeftEnvelope(
-                paddedPath
-              )
-                .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
-                .join(",")})`,
-            },
+            name: "Hanson Perry and the Crabmeat Loss",
+            desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
+            color: [0, 90, 50],
+            url: "https://scp-wiki.wikidot.com/mosaic-crabmeat",
           },
           {
-            tag: "div",
-            style: {
-              width: "50%",
-              height: `${rect.height}px`,
-              float: "right",
-              shapeOutside: `polygon(100% 100%, 100% 0%, ${getRightEnvelope(
-                paddedPath
-              )
-                .map(
-                  (s) => `${s.x - rect.x - rect.width / 2}px ${s.y - rect.y}px`
-                )
-                .join(",")})`,
-            },
+            name: "The Rainbow Pebble",
+            desc: "A rainbow pebble changes hands repeatedly. But does anyone know its true worth?",
+            color: [274, 70, 34],
+            url: "https://scp-wiki.wikidot.com/mosaic-the-rainbow-pebble",
+          },
+          {
+            name: "The Broken Dawn",
+            desc: "In which dawn breaks, and no-one will come by to fix it.",
+            color: [0, 90, 34],
+            url: "https://scp-wiki.wikidot.com/the-broken-dawn",
+          },
+          {
+            name: "The Beast of Liverwort Hill",
+            desc: "A metal beast appears in Liverwort Hill, but nothing steel can stsay.",
+            color: [46, 100, 36],
+            url: "https://scp-wiki.wikidot.com/the-beast-of-liverwort-hill",
+          },
+          {
+            name: "Right of First Refuse",
+            desc: "In Which a Pile of Corpses Makes a Plea to the Courts.",
+            color: [127, 90, 30],
+            url: "https://scp-wiki.wikidot.com/right-of-first-refuse",
+          },
+          {
+            name: "The Gizzen Kirk",
+            desc: "The Proctors find a canny soul to build a church to Progress.",
+            color: [209, 92, 36],
+            url: "https://scp-wiki.wikidot.com/the-gizzen-kirk",
+          },
+          {
+            name: "Where Once the Canvas Fish Fly",
+            desc: "In which great beasts leave only their wake in the sky.",
+            color: [0, 90, 50],
+            url: "https://scp-wiki.wikidot.com/canvas-fish-fly",
+          },
+          {
+            name: "The Parcelmen's Creed",
+            desc: "In which a Parcelwoman faces her greatest challenge yet: stairs.",
+            color: [0, 90, 50],
+            url: "https://scp-wiki.wikidot.com/the-parcelmens-creed",
+          },
+          {
+            name: "Bessie Bogan and the Crow Road Inn",
+            desc: "In which the Mosaic’s favorite tavern flies into trouble.",
+            color: [0, 90, 50],
+            url: "https://scp-wiki.wikidot.com/bessie-bogan-and-the-crow-road-inn",
           },
         ];
 
-        const tesseraTextRef = {};
+        let pts = [];
 
-        const tesseraNormalContents = {
-          tag: "div",
-          className: "tessera-normal-contents",
-          style: {
-            ...FULLSIZE,
-            zIndex: "3",
-            fontWeight: "bolder",
-            fontSize: "1.2em",
-            width: "100%",
-            transform: `rotate(${textAngle}deg)`,
-          },
-          children: [
-            ...tesseraTextEnvelopes,
-            {
-              tag: "div",
-              innerText: pt.text,
-              className: "tessera-normal-text",
-              style: {
-                textAlign: "center",
-                width: "100%",
-              },
-              ref: tesseraTextRef,
-            },
-          ],
-        };
+        let cols = 5;
 
-        const tesseraShadowTextRef = {};
+        let width = window.innerWidth;
+        let dx = Math.min(200, width / (cols - 1));
 
-        const tesseraShadowTextContents = {
-          tag: "div",
-          className: "tessera-shadow-text-contents",
-          style: {
-            ...FULLSIZE,
-            zIndex: "3",
-            top: "1px",
-            left: "1px",
-            fontWeight: "bolder",
-            fontSize: "1.2em",
-            width: "100%",
-            transform: `rotate(${textAngle}deg)`,
-          },
-          children: [
-            ...tesseraTextEnvelopes,
-            {
-              tag: "div",
-              innerText: pt.text,
-              className: "tessera-shadow-text",
-              style: {
-                textAlign: "center",
-                width: "100%",
-              },
-              ref: tesseraShadowTextRef,
-            },
-          ],
-        };
+        while (dx < 150 && cols >= 3) {
+          cols--;
+          dx = Math.min(200, width / (cols - 1));
+        }
 
-        const tesseraHoverTextRef = {};
+        let rows = Math.ceil(tesseraData.length / (cols - 2)) + 2;
 
-        const tesseraHoverContents = {
-          tag: "div",
-          className: "tessera-hover-contents",
-          style: {
-            ...FULLSIZE,
-            zIndex: "3",
-            color: "black",
-            fontWeight: "bolder",
-            fontSize: "0.95em",
-            width: "100%",
-            mixBlendMode: "multiply",
-            rotate: `${textAngle}deg`,
-          },
-          children: [
-            ...tesseraTextEnvelopes,
-            {
-              tag: "div",
-              innerText: pt.hoverText,
-              style: {
-                textAlign: "center",
-                width: "100%",
-              },
-              className: "tessera-hover-text",
-              ref: tesseraHoverTextRef,
-            },
-          ],
-        };
+        const parity = Math.floor(Math.random() * 2);
+        const parity2 = Math.floor(Math.random() * 2);
 
-        const tesseraHoverContentsShadow = {
-          tag: "div",
-          className: "tessera-hover-contents-shadow",
-          style: {
-            ...FULLSIZE,
-            zIndex: "3",
-            color: "black",
-            fontWeight: "bolder",
-            fontSize: "0.85em",
-            width: "100%",
-            mixBlendMode: "multiply",
-            transform: `rotate(${textAngle}deg)`,
-          },
-          children: [
-            ...tesseraTextEnvelopes,
-            {
-              tag: "div",
-              innerText: pt.hoverText,
-              style: {
-                textAlign: "center",
-                width: "100%",
-                marginTop: "15px",
-              },
-              className: "tessera-hover-text-shadow",
-            },
-          ],
-        };
+        for (let y = 0; y < rows; y++) {
+          for (let x = 0; x < cols; x++) {
+            let text = "";
+            let hoverText = "";
+            let color = [0, 90, 50];
+            let url = "";
+            if (
+              x !== 0 &&
+              x !== cols - 1 &&
+              y !== 0 &&
+              y !== rows - 1 &&
+              tesseraData.length > 0
+            ) {
+              const i = Math.floor(Math.random() * tesseraData.length);
+              const t = tesseraData.splice(i, 1)[0];
+              text = t.name;
+              hoverText = t.desc;
+              color = t.color;
+              url = t.url;
+            }
 
-        const tesseraPattern = {
-          tag: "div",
-          style: {
-            ...FULLSIZE,
-            zInex: "2",
-            mixBlendMode: "multiply",
-            backgroundImage: tesseraScuffMarks,
-            backgroundSize: "400%",
-            backgroundPosition: scuffMarksCenter,
-            opacity: 1,
-            filter: "blur(0.5px)",
-          },
-        };
+            pts.push({
+              x: (parity2 ? x : cols - x - 1) * dx + Math.random() * 80 - 40,
+              y: y * 170 + Math.random() * 80 - 40 + ((x + parity) % 2) * 80,
+              text,
+              hoverText,
+              color,
+              url,
+            });
+          }
+        }
 
-        const tesseraBackfacePattern = {
-          tag: "div",
-        };
+        function getEnclosingBox(pts) {
+          let minX = Infinity;
+          let minY = Infinity;
+          let maxX = -Infinity;
+          let maxY = -Infinity;
 
-        const tesseraPattern2 = {
-          tag: "div",
-          style: {
-            ...FULLSIZE,
-            zIndex: "2",
-            mixBlendMode: "luminance",
-            backgroundImage: SMOOTH_SVG,
-            backgroundSize: "500px",
-            opacity: "0.1",
-          },
-        };
+          for (const pt of pts) {
+            minX = Math.min(pt.x, minX);
+            maxX = Math.max(pt.x, maxX);
+            minY = Math.min(pt.y, minY);
+            maxY = Math.max(pt.y, maxY);
+          }
 
-        const tesseraDetail = {
-          tag: "div",
-          style: {
-            ...FULLSIZE,
-            filter: "blur(2.5px)",
-          },
-          className: "tessera-detail",
-          children: [
-            {
-              tag: "div",
-              className: "tessera-backface",
-              style: {
-                ...FULLSIZE,
-                clipPath: pathPoly,
-                opacity: `var(--bg-alpha)`,
-              },
-              children: [
-                {
-                  tag: "div",
-                  style: {
-                    ...FULLSIZE,
-                    zInex: "2",
-                    backgroundImage: tesseraScuffMarks,
-                    backgroundSize: "400%",
-                    backgroundPosition: scuffMarksCenter,
-                    opacity: 1,
-                  },
-                },
-              ],
-            },
-          ],
-        };
+          return {
+            x: minX,
+            y: minY,
+            width: maxX - minX,
+            height: maxY - minY,
+          };
+        }
 
-        const highlights1 = {
-          tag: "div",
-          style: {
-            ...FULLSIZE,
-            filter: `blur(2px)`,
-            mixBlendMode: "screen",
-          },
-          className: "tessera-default-highlights",
-          children: [
-            {
-              tag: "div",
-              style: {
-                ...FULLSIZE,
-                clipPath: pathPoly,
-                transform: `scale(0.94)`,
-                backgroundColor: "#fff8",
-              },
-              children: [
-                {
-                  tag: "div",
-                  style: {
-                    ...FULLSIZE,
-                    backgroundColor: "black",
-                    clipPath: pathPoly,
-                    transform: `translate(-2px, -2px)`,
-                  },
-                },
-              ],
-            },
-            {
-              tag: "div",
-              className: "back-highlight",
-              style: {
-                ...FULLSIZE,
-                clipPath: pathPoly,
-                backgroundColor: "#fff2",
-              },
-              children: [
-                {
-                  tag: "div",
-                  style: {
-                    ...FULLSIZE,
-                    backgroundColor: "black",
-                    clipPath: pathPoly,
-                    transform: `translate(2px, 2px)`,
-                  },
-                },
-              ],
-            },
-          ],
-        };
-
-        const tesseraBacklight = {
-          tag: "div",
-          style: {},
-          className: "backlight-container",
-          children: [
-            {
-              tag: "div",
-              className: "backlight",
-            },
-          ],
-        };
-
-        const tessera = {
-          tag: "div",
-          style: {
-            ...FULLSIZE,
-            clipPath: pathPoly,
-          },
-          className: "tessera",
-          children: [
-            {
-              tag: "div",
-              className: "tessera-background",
-              style: {
-                ...FULLSIZE,
-                opacity: `var(--bg-alpha)`,
-              },
-              children: [],
-            },
-            tesseraBacklight,
-            tesseraNormalContents,
-            // tesseraShadowTextContents,
-            tesseraHoverContents,
-            tesseraDetail,
-            tesseraPattern,
-            highlights1,
-            tesseraHoverContentsShadow,
-          ],
-        };
-
-        const tesseraOuterRef = {};
-
-        const tesseraOuter = {
-          tag: "a",
-          style: {
-            display: "block",
-            position: "absolute",
-            top: `${rect.y}px`,
-            left: `${rect.x}px`,
-            width: `${rect.width}px`,
-            height: `${rect.height}px`,
-            "--tessera-indirect-lighting-color": `hsl(${hue}deg ${
-              saturation * 0.6
-            }% ${lightness * 1.3}%)`,
-            clipPath: pathPoly,
-            "--tessera-bg-color": `hsl(${hue}deg ${saturation}% ${lightness}%)`,
-            "--tessera-backface-color": `hsl(${hue}deg ${saturation - 10}% ${
-              lightness - 40
-            }%)`,
-            "--tessera-visited-bg-color": `hsl(${hue}deg ${0}% ${lightness}%)`,
-            "--tessera-visited-backface-color": `hsl(${hue}deg ${0}% ${
-              lightness - 40
-            }%)`,
-          },
-          href: pt.url ?? "ligmaballs",
-          className: "tessera-outer",
-          children: [tessera],
-          ref: tesseraOuterRef,
-        };
-
-        document.body.appendChild(makeHTMLTree(tesseraOuter));
-
-        tesseraOuterRef.current.addEventListener("mouseenter", (e) => {
-          e.currentTarget.style.zIndex = z++;
-        });
-
-        {
-          const tesseraText = tesseraTextRef.current;
-
-          let min = 0;
-          let max = Math.max(
-            rect.height - tesseraText.getBoundingClientRect().height,
-            0
-          );
-          let marginTop = (min + max) / 2;
-          tesseraText.style.marginTop = `${marginTop}px`;
-          for (let i = 0; i < 30; i++) {
-            let textrect = tesseraText.getBoundingClientRect();
-
-            let spacingTop = textrect.top - rect.y;
-            let spacingBottom = rect.y + rect.height - textrect.bottom;
-
-            marginTop = Math.min(
-              Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
-              max
+        function getLeftEnvelope(pts) {
+          const box = getEnclosingBox(pts);
+          const ax = box.x + box.width / 2;
+          const ay = box.y + box.height / 2;
+          return pts
+            .filter(
+              (p) => p.y === box.y || p.y === box.y + box.height || p.x < ax
+            )
+            .sort(
+              (a, b) =>
+                Math.atan2(ay - a.y, ax - a.x) - Math.atan2(ay - b.y, ax - b.x)
             );
+        }
 
+        function getRightEnvelope(pts) {
+          const box = getEnclosingBox(pts);
+          const ax = box.x + box.width / 2;
+          const ay = box.y + box.height / 2;
+          return pts
+            .filter(
+              (p) => p.y === box.y || p.y === box.y + box.height || p.x >= ax
+            )
+            .sort(
+              (a, b) =>
+                Math.atan2(a.y - ay, a.x - ax) - Math.atan2(b.y - ay, b.x - ax)
+            );
+        }
+
+        function makeHTMLTree(tree) {
+          const elem = document.createElement(tree.tag);
+          for (const [key, value] of Object.entries(tree)) {
+            if (key === "tag") continue;
+            if (key === "style") continue;
+            if (key === "children") continue;
+            if (key === "ref") continue;
+            elem[key] = value;
+          }
+
+          for (const [key, value] of Object.entries(tree.style ?? {})) {
+            if (key.startsWith("--")) {
+              elem.style.setProperty(key, value);
+              continue;
+            }
+            elem.style[key] = value;
+          }
+
+          for (const child of tree.children ?? []) {
+            elem.appendChild(child._raw ? child._raw : makeHTMLTree(child));
+          }
+
+          if (tree.ref) {
+            tree.ref.current = elem;
+          }
+
+          return elem;
+        }
+
+        const FULLSIZE = {
+          position: "absolute",
+          top: "0px",
+          left: "0px",
+          width: "100%",
+          height: "100%",
+        };
+
+        let maxY = 0;
+
+        for (const pt of pts) {
+          if (!pt.text) continue;
+          // const hue = Math.random() * 360;
+          // const saturation = Math.random() * 90 + 10;
+          // const lightness = Math.random() * 20 + 30;
+          const [hue, saturation, lightness] = pt.color;
+
+          const path = getVoronoiPath(pt, pts, 30, 10);
+          const paddedPath = getVoronoiPath(pt, pts, 10, 35);
+          const rect = getEnclosingBox(path);
+          maxY = Math.max(rect.y + rect.height, maxY);
+          const textAngle = Math.random() * 10 - 5;
+
+          const pathPoly = `polygon(${path
+            .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
+            .join(",")})`;
+
+          // const tesseraScuffMarks = scuffMarks(Math.random() * 360);
+          const tesseraScuffMarks = "url(scuff-marks-texture-atlas.png)";
+          const scuffMarksDir = Math.floor(Math.random() * 16);
+          const scuffMarksDirX = (scuffMarksDir % 4) / 3;
+          const scuffMarksDirY = Math.floor(scuffMarksDir / 4) / 3;
+          const scuffMarksCenter = `${scuffMarksDirX * 100}% ${
+            scuffMarksDirY * 100
+          }%`;
+
+          const tesseraTextEnvelopes = [
+            {
+              tag: "div",
+              style: {
+                width: "50%",
+                height: `${rect.height}px`,
+                float: "left",
+                shapeOutside: `polygon(0% 0%, 0% 100%, ${getLeftEnvelope(
+                  paddedPath
+                )
+                  .map((s) => `${s.x - rect.x}px ${s.y - rect.y}px`)
+                  .join(",")})`,
+              },
+            },
+            {
+              tag: "div",
+              style: {
+                width: "50%",
+                height: `${rect.height}px`,
+                float: "right",
+                shapeOutside: `polygon(100% 100%, 100% 0%, ${getRightEnvelope(
+                  paddedPath
+                )
+                  .map(
+                    (s) =>
+                      `${s.x - rect.x - rect.width / 2}px ${s.y - rect.y}px`
+                  )
+                  .join(",")})`,
+              },
+            },
+          ];
+
+          const tesseraTextRef = {};
+
+          const tesseraNormalContents = {
+            tag: "div",
+            className: "tessera-normal-contents",
+            style: {
+              ...FULLSIZE,
+              zIndex: "3",
+              fontWeight: "bolder",
+              fontSize: "1.2em",
+              width: "100%",
+              transform: `rotate(${textAngle}deg)`,
+            },
+            children: [
+              ...tesseraTextEnvelopes,
+              {
+                tag: "div",
+                innerText: pt.text,
+                className: "tessera-normal-text",
+                style: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+                ref: tesseraTextRef,
+              },
+            ],
+          };
+
+          const tesseraShadowTextRef = {};
+
+          const tesseraShadowTextContents = {
+            tag: "div",
+            className: "tessera-shadow-text-contents",
+            style: {
+              ...FULLSIZE,
+              zIndex: "3",
+              top: "1px",
+              left: "1px",
+              fontWeight: "bolder",
+              fontSize: "1.2em",
+              width: "100%",
+              transform: `rotate(${textAngle}deg)`,
+            },
+            children: [
+              ...tesseraTextEnvelopes,
+              {
+                tag: "div",
+                innerText: pt.text,
+                className: "tessera-shadow-text",
+                style: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+                ref: tesseraShadowTextRef,
+              },
+            ],
+          };
+
+          const tesseraHoverTextRef = {};
+
+          const tesseraHoverContents = {
+            tag: "div",
+            className: "tessera-hover-contents",
+            style: {
+              ...FULLSIZE,
+              zIndex: "3",
+              color: "black",
+              fontWeight: "bolder",
+              fontSize: "0.95em",
+              width: "100%",
+              mixBlendMode: "multiply",
+              rotate: `${textAngle}deg`,
+            },
+            children: [
+              ...tesseraTextEnvelopes,
+              {
+                tag: "div",
+                innerText: pt.hoverText,
+                style: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+                className: "tessera-hover-text",
+                ref: tesseraHoverTextRef,
+              },
+            ],
+          };
+
+          const tesseraHoverContentsShadow = {
+            tag: "div",
+            className: "tessera-hover-contents-shadow",
+            style: {
+              ...FULLSIZE,
+              zIndex: "3",
+              color: "black",
+              fontWeight: "bolder",
+              fontSize: "0.85em",
+              width: "100%",
+              mixBlendMode: "multiply",
+              transform: `rotate(${textAngle}deg)`,
+            },
+            children: [
+              ...tesseraTextEnvelopes,
+              {
+                tag: "div",
+                innerText: pt.hoverText,
+                style: {
+                  textAlign: "center",
+                  width: "100%",
+                  marginTop: "15px",
+                },
+                className: "tessera-hover-text-shadow",
+              },
+            ],
+          };
+
+          const tesseraPattern = {
+            tag: "div",
+            style: {
+              ...FULLSIZE,
+              zInex: "2",
+              mixBlendMode: "multiply",
+              backgroundImage: tesseraScuffMarks,
+              backgroundSize: "400%",
+              backgroundPosition: scuffMarksCenter,
+              opacity: 1,
+              filter: "blur(0.5px)",
+            },
+          };
+
+          const tesseraBackfacePattern = {
+            tag: "div",
+          };
+
+          const tesseraPattern2 = {
+            tag: "div",
+            style: {
+              ...FULLSIZE,
+              zIndex: "2",
+              mixBlendMode: "luminance",
+              backgroundImage: SMOOTH_SVG,
+              backgroundSize: "500px",
+              opacity: "0.1",
+            },
+          };
+
+          const tesseraDetail = {
+            tag: "div",
+            style: {
+              ...FULLSIZE,
+              filter: "blur(2.5px)",
+            },
+            className: "tessera-detail",
+            children: [
+              {
+                tag: "div",
+                className: "tessera-backface",
+                style: {
+                  ...FULLSIZE,
+                  clipPath: pathPoly,
+                  opacity: `var(--bg-alpha)`,
+                },
+                children: [
+                  {
+                    tag: "div",
+                    style: {
+                      ...FULLSIZE,
+                      zInex: "2",
+                      backgroundImage: tesseraScuffMarks,
+                      backgroundSize: "400%",
+                      backgroundPosition: scuffMarksCenter,
+                      opacity: 1,
+                    },
+                  },
+                ],
+              },
+            ],
+          };
+
+          const highlights1 = {
+            tag: "div",
+            style: {
+              ...FULLSIZE,
+              filter: `blur(2px)`,
+              mixBlendMode: "screen",
+            },
+            className: "tessera-default-highlights",
+            children: [
+              {
+                tag: "div",
+                style: {
+                  ...FULLSIZE,
+                  clipPath: pathPoly,
+                  transform: `scale(0.94)`,
+                  backgroundColor: "#fff8",
+                },
+                children: [
+                  {
+                    tag: "div",
+                    style: {
+                      ...FULLSIZE,
+                      backgroundColor: "black",
+                      clipPath: pathPoly,
+                      transform: `translate(-2px, -2px)`,
+                    },
+                  },
+                ],
+              },
+              {
+                tag: "div",
+                className: "back-highlight",
+                style: {
+                  ...FULLSIZE,
+                  clipPath: pathPoly,
+                  backgroundColor: "#fff2",
+                },
+                children: [
+                  {
+                    tag: "div",
+                    style: {
+                      ...FULLSIZE,
+                      backgroundColor: "black",
+                      clipPath: pathPoly,
+                      transform: `translate(2px, 2px)`,
+                    },
+                  },
+                ],
+              },
+            ],
+          };
+
+          const tesseraBacklight = {
+            tag: "div",
+            style: {},
+            className: "backlight-container",
+            children: [
+              {
+                tag: "div",
+                className: "backlight",
+              },
+            ],
+          };
+
+          const tessera = {
+            tag: "div",
+            style: {
+              ...FULLSIZE,
+              clipPath: pathPoly,
+            },
+            className: "tessera",
+            children: [
+              {
+                tag: "div",
+                className: "tessera-background",
+                style: {
+                  ...FULLSIZE,
+                  opacity: `var(--bg-alpha)`,
+                },
+                children: [],
+              },
+              tesseraBacklight,
+              tesseraNormalContents,
+              // tesseraShadowTextContents,
+              tesseraHoverContents,
+              tesseraDetail,
+              tesseraPattern,
+              highlights1,
+              tesseraHoverContentsShadow,
+            ],
+          };
+
+          const tesseraOuterRef = {};
+
+          const tesseraOuter = {
+            tag: "a",
+            style: {
+              display: "block",
+              position: "absolute",
+              top: `${rect.y}px`,
+              left: `${rect.x}px`,
+              width: `${rect.width}px`,
+              height: `${rect.height}px`,
+              "--tessera-indirect-lighting-color": `hsl(${hue}deg ${
+                saturation * 0.6
+              }% ${lightness * 1.3}%)`,
+              clipPath: pathPoly,
+              "--tessera-bg-color": `hsl(${hue}deg ${saturation}% ${lightness}%)`,
+              "--tessera-backface-color": `hsl(${hue}deg ${saturation - 10}% ${
+                lightness - 40
+              }%)`,
+              "--tessera-visited-bg-color": `hsl(${hue}deg ${0}% ${lightness}%)`,
+              "--tessera-visited-backface-color": `hsl(${hue}deg ${0}% ${
+                lightness - 40
+              }%)`,
+            },
+            href: pt.url ?? "ligmaballs",
+            className: "tessera-outer",
+            children: [tessera],
+            ref: tesseraOuterRef,
+          };
+
+          document.body.appendChild(makeHTMLTree(tesseraOuter));
+
+          tesseraOuterRef.current.addEventListener("mouseenter", (e) => {
+            e.currentTarget.style.zIndex = z++;
+          });
+
+          {
+            const tesseraText = tesseraTextRef.current;
+
+            let min = 0;
+            let max = Math.max(
+              rect.height - tesseraText.getBoundingClientRect().height,
+              0
+            );
+            let marginTop = (min + max) / 2;
             tesseraText.style.marginTop = `${marginTop}px`;
-            // tesseraShadowTextRef.current.style.marginTop = `${marginTop}px`;
+            for (let i = 0; i < 30; i++) {
+              let textrect = tesseraText.getBoundingClientRect();
+
+              let spacingTop = textrect.top - rect.y;
+              let spacingBottom = rect.y + rect.height - textrect.bottom;
+
+              marginTop = Math.min(
+                Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
+                max
+              );
+
+              tesseraText.style.marginTop = `${marginTop}px`;
+              // tesseraShadowTextRef.current.style.marginTop = `${marginTop}px`;
+            }
           }
-        }
 
-        {
-          const tesseraHoverText = tesseraHoverTextRef.current;
+          {
+            const tesseraHoverText = tesseraHoverTextRef.current;
 
-          let min = 0;
-          let max = Math.max(
-            rect.height - tesseraHoverText.getBoundingClientRect().height,
-            0
-          );
-          let marginTop = (min + max) / 2;
-          tesseraHoverText.style.marginTop = `${marginTop}px`;
-          for (let i = 0; i < 30; i++) {
-            let textrect = tesseraHoverText.getBoundingClientRect();
-
-            let spacingTop = textrect.top - rect.y;
-            let spacingBottom = rect.y + rect.height - textrect.bottom;
-
-            marginTop = Math.min(
-              Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
-              max
+            let min = 0;
+            let max = Math.max(
+              rect.height - tesseraHoverText.getBoundingClientRect().height,
+              0
             );
-
+            let marginTop = (min + max) / 2;
             tesseraHoverText.style.marginTop = `${marginTop}px`;
+            for (let i = 0; i < 30; i++) {
+              let textrect = tesseraHoverText.getBoundingClientRect();
+
+              let spacingTop = textrect.top - rect.y;
+              let spacingBottom = rect.y + rect.height - textrect.bottom;
+
+              marginTop = Math.min(
+                Math.max(marginTop + (spacingBottom - spacingTop) * 0.1, min),
+                max
+              );
+
+              tesseraHoverText.style.marginTop = `${marginTop}px`;
+            }
           }
         }
+
+        document.body.style.height = `${maxY + 40}px`;
       }
 
-      document.body.style.height = `${maxY + 40}px`;
+      generateTessera();
+
+      let resizeTimer = 10;
+
+      let resizeInterval = undefined;
+
+      window.addEventListener("resize", () => {
+        resizeTimer = 10;
+        if (resizeInterval === undefined) {
+          resizeInterval = setInterval(() => {
+            resizeTimer--;
+
+            if (resizeTimer <= 0) {
+              clearInterval(resizeInterval);
+              resizeInterval = undefined;
+              for (const c of document.querySelectorAll(".tessera-outer")) {
+                c.parentElement.removeChild(c);
+              }
+
+              generateTessera();
+            }
+          }, 100);
+        }
+      });
     </script>
   </body>
 </html>
