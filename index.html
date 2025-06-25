@@ -55,11 +55,7 @@
           drop-shadow(5px 5px 5px rgba(243, 188, 107, 0.4)); */
         /* filter: drop-shadow(0px 0px 0px #fff8); */
         text-shadow: 1px 1px 1px #0003;
-        background-image: linear-gradient(
-          45deg,
-          rgba(243, 188, 107, 1),
-          rgb(255, 235, 205)
-        );
+        background-image: linear-gradient(45deg, #f9f8f8, #dbccc4);
         color: transparent;
         background-clip: text;
       }
@@ -154,37 +150,18 @@
         position: absolute;
         top: calc(50% - 60px);
         left: calc(50% - 60px);
-        border-radius: 50%;
-        background-color: white;
         width: 120px;
         height: 120px;
         transition: opacity 0.7s, fliter 0.7s;
         opacity: 0;
-      }
-
-      .backlight-link {
-        position: absolute;
-        top: calc(50% - 60px);
-        left: calc(50% - 60px);
-        border-radius: 50%;
-        background-color: white;
-        width: 120px;
-        height: 120px;
-        transition: opacity 0.7s, fliter 0.7s;
-        opacity: 0.3;
-        mix-blend-mode: multiply;
-      }
-
-      .tessera:hover .backlight-link {
-        opacity: 0;
-      }
-
-      .backlight-link:visited {
-        background-color: black;
       }
 
       .tessera:hover .backlight {
         opacity: 0.2;
+      }
+
+      .backlight-link:visited {
+        background-color: black;
       }
 
       .visited-checker-link {
@@ -217,7 +194,16 @@
       }
     </style>
     <script>
+      let lastChosenWidth = -1;
+      const search = new URLSearchParams(window.location.search);
+
       function generateTessera() {
+        if (window.innerWidth === lastChosenWidth) return;
+        lastChosenWidth = window.innerWidth;
+        for (const c of document.querySelectorAll(".tessera-outer")) {
+          c.parentElement.removeChild(c);
+        }
+
         let z = 2;
         const BUMPY_SVG = `url("data:image/svg+xml;utf8,%3Csvg%20%0A%20%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0A%20%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20%0A%20%20viewBox%3D%220%200%201000%201000%22%0A%3E%0A%20%20%3Cfilter%20id%3D%22f0%22%3E%0A%20%20%20%20%3CfeTurbulence%20result%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%20%20%20baseFrequency%3D%220.02%200.02%22%20type%3D%22fractalNoise%22%20numOctaves%3D%224%22%2F%3E%20%3CfeSpecularLighting%0A%20%20%20%20%20%20result%3D%229ae9575f-42f5-448e-90e2-60af12c8e82d%22%20in%3D%22d6367ea8-c498-48e2-a844-47b77c6ca5e2%22%20%0A%20%20%20%20%20%20specularExponent%3D%2212%22%0A%20%20%20%20%20%20lighting-color%3D%22%23bbbbbb%22%3E%0A%20%20%20%20%20%20%3CfeDistantLight%20azimuth%3D%2245%22%20elevation%3D%2250%22%20%2F%3E%0A%20%20%20%20%3C%2FfeSpecularLighting%3E%0A%20%20%3C%2Ffilter%3E%0A%20%20%3Cg%20filter%3D%22url('%23f0')%22%3E%0A%20%20%20%20%3Crect%20x%3D%220%22%20y%3D%220%22%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22transparent%22%3E%3C%2Frect%3E%0A%20%20%20%20%3Ctext%20x%3D%2210%22%20y%3D%2250%22%3Eballs%20balls%20balls%3C%2Ftext%3E%20%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E")`;
 
@@ -306,7 +292,7 @@
           return path;
         }
 
-        const tesseraData = [
+        const tesseraData = TESSERA_DATA ?? [
           {
             name: "Hanson Perry and the Crabmeat Loss",
             desc: "Friday was the wretched end of everybody's week, but Hanson Perry liked it fine.",
@@ -327,7 +313,7 @@
           },
           {
             name: "The Beast of Liverwort Hill",
-            desc: "A metal beast appears in Liverwort Hill, but nothing steel can stsay.",
+            desc: "A metal beast appears in Liverwort Hill, but nothing steel can stay.",
             color: [46, 100, 36],
             url: "https://scp-wiki.wikidot.com/the-beast-of-liverwort-hill",
           },
@@ -365,7 +351,7 @@
 
         let pts = [];
 
-        let cols = 5;
+        let cols = 7;
 
         let width = window.innerWidth;
         let dx = Math.min(200, width / (cols - 1));
@@ -374,6 +360,9 @@
           cols--;
           dx = Math.min(200, width / (cols - 1));
         }
+
+        const maxWidth = dx * (cols - 1);
+        const offsetFromLeft = (window.innerWidth - maxWidth) / 2;
 
         let rows = Math.ceil(tesseraData.length / (cols - 2)) + 2;
 
@@ -402,7 +391,11 @@
             }
 
             pts.push({
-              x: (parity2 ? x : cols - x - 1) * dx + Math.random() * 80 - 40,
+              x:
+                (parity2 ? x : cols - x - 1) * dx +
+                Math.random() * 80 +
+                offsetFromLeft -
+                40,
               y: y * 170 + Math.random() * 80 - 40 + ((x + parity) % 2) * 80,
               text,
               hoverText,
@@ -518,7 +511,7 @@
             .join(",")})`;
 
           // const tesseraScuffMarks = scuffMarks(Math.random() * 360);
-          const tesseraScuffMarks = "url(scuff-marks-texture-atlas.png)";
+          const tesseraScuffMarks = `url("${search.get("scuff-marks-link")}")`;
           const scuffMarksDir = Math.floor(Math.random() * 16);
           const scuffMarksDirX = (scuffMarksDir % 4) / 3;
           const scuffMarksDirY = Math.floor(scuffMarksDir / 4) / 3;
@@ -797,6 +790,9 @@
               {
                 tag: "div",
                 className: "backlight",
+                style: {
+                  backgroundImage: `url("${search.get("backlight-link")}")`,
+                },
               },
             ],
           };
@@ -833,6 +829,7 @@
 
           const tesseraOuter = {
             tag: "a",
+            target: "_parent",
             style: {
               display: "block",
               position: "absolute",
@@ -848,10 +845,12 @@
               "--tessera-backface-color": `hsl(${hue}deg ${saturation - 10}% ${
                 lightness - 40
               }%)`,
-              "--tessera-visited-bg-color": `hsl(${hue}deg ${0}% ${lightness}%)`,
-              "--tessera-visited-backface-color": `hsl(${hue}deg ${0}% ${
-                lightness - 40
-              }%)`,
+              "--tessera-visited-bg-color": `hsl(${hue}deg ${
+                saturation * 0.1
+              }% ${lightness}%)`,
+              "--tessera-visited-backface-color": `hsl(${hue}deg ${
+                saturation * 0.1
+              }% ${lightness - 40}%)`,
             },
             href: pt.url ?? "ligmaballs",
             className: "tessera-outer",
@@ -935,9 +934,6 @@
             if (resizeTimer <= 0) {
               clearInterval(resizeInterval);
               resizeInterval = undefined;
-              for (const c of document.querySelectorAll(".tessera-outer")) {
-                c.parentElement.removeChild(c);
-              }
 
               generateTessera();
             }
